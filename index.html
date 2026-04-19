@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
     /* ══════════════════════════════════════════════════════════════════
        DESIGN TOKENS - LIGHT & DARK MODE
@@ -126,9 +127,16 @@
     }
 
     .nav-logo {
-      font-weight: 600;
-      font-size: 15px;
-      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #logo-canvas {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      cursor: pointer;
     }
 
     .nav-links {
@@ -935,7 +943,9 @@
 
   <!-- Navigation -->
   <nav id="nav">
-    <a href="#" class="nav-logo">Rishi Sen</a>
+    <a href="#" class="nav-logo">
+    <canvas id="logo-canvas"></canvas>
+  </a>
     <ul class="nav-links">
       <li><a href="#experience">Experience</a></li>
       <li><a href="#projects">Projects</a></li>
@@ -1417,6 +1427,196 @@
         }
       });
     });
+
+    // ═══════════════════════════════════════════════════════════════════
+    // THREE.JS 3D ANIMATED LOGO - RS INITIALS
+    // ═══════════════════════════════════════════════════════════════════
+    (function initLogo() {
+      const canvas = document.getElementById('logo-canvas');
+      if (!canvas) return;
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
+      camera.position.z = 3;
+
+      const renderer = new THREE.WebGLRenderer({ 
+        canvas: canvas, 
+        alpha: true, 
+        antialias: true 
+      });
+      renderer.setSize(44, 44);
+      renderer.setPixelRatio(window.devicePixelRatio);
+
+      // Create RS geometry using BoxGeometry for stylized letters
+      const group = new THREE.Group();
+
+      // Material that responds to theme
+      const getAccentColor = () => {
+        const theme = document.documentElement.getAttribute('data-theme');
+        return theme === 'dark' ? 0x22d3ee : 0x0891b2;
+      };
+
+      const material = new THREE.MeshStandardMaterial({
+        color: getAccentColor(),
+        metalness: 0.7,
+        roughness: 0.2,
+        emissive: getAccentColor(),
+        emissiveIntensity: 0.3
+      });
+
+      // R letter - made of boxes
+      const rGroup = new THREE.Group();
+      
+      // R vertical bar
+      const rVertical = new THREE.Mesh(
+        new THREE.BoxGeometry(0.15, 0.8, 0.15),
+        material
+      );
+      rVertical.position.set(-0.25, 0, 0);
+      rGroup.add(rVertical);
+
+      // R top horizontal
+      const rTop = new THREE.Mesh(
+        new THREE.BoxGeometry(0.35, 0.12, 0.15),
+        material
+      );
+      rTop.position.set(-0.1, 0.34, 0);
+      rGroup.add(rTop);
+
+      // R middle horizontal
+      const rMid = new THREE.Mesh(
+        new THREE.BoxGeometry(0.35, 0.12, 0.15),
+        material
+      );
+      rMid.position.set(-0.1, 0, 0);
+      rGroup.add(rMid);
+
+      // R curve top right
+      const rCurveTop = new THREE.Mesh(
+        new THREE.BoxGeometry(0.12, 0.25, 0.15),
+        material
+      );
+      rCurveTop.position.set(0.1, 0.17, 0);
+      rGroup.add(rCurveTop);
+
+      // R diagonal leg
+      const rLeg = new THREE.Mesh(
+        new THREE.BoxGeometry(0.12, 0.45, 0.15),
+        material
+      );
+      rLeg.rotation.z = -0.5;
+      rLeg.position.set(0.08, -0.22, 0);
+      rGroup.add(rLeg);
+
+      rGroup.position.x = -0.35;
+      group.add(rGroup);
+
+      // S letter - made of boxes
+      const sGroup = new THREE.Group();
+
+      // S top curve
+      const sTop = new THREE.Mesh(
+        new THREE.BoxGeometry(0.4, 0.12, 0.15),
+        material
+      );
+      sTop.position.set(0, 0.34, 0);
+      sGroup.add(sTop);
+
+      // S top left vertical
+      const sTopLeft = new THREE.Mesh(
+        new THREE.BoxGeometry(0.12, 0.25, 0.15),
+        material
+      );
+      sTopLeft.position.set(-0.14, 0.17, 0);
+      sGroup.add(sTopLeft);
+
+      // S middle curve
+      const sMid = new THREE.Mesh(
+        new THREE.BoxGeometry(0.4, 0.12, 0.15),
+        material
+      );
+      sMid.position.set(0, 0, 0);
+      sGroup.add(sMid);
+
+      // S bottom right vertical
+      const sBotRight = new THREE.Mesh(
+        new THREE.BoxGeometry(0.12, 0.25, 0.15),
+        material
+      );
+      sBotRight.position.set(0.14, -0.17, 0);
+      sGroup.add(sBotRight);
+
+      // S bottom curve
+      const sBot = new THREE.Mesh(
+        new THREE.BoxGeometry(0.4, 0.12, 0.15),
+        material
+      );
+      sBot.position.set(0, -0.34, 0);
+      sGroup.add(sBot);
+
+      sGroup.position.x = 0.4;
+      group.add(sGroup);
+
+      scene.add(group);
+
+      // Lighting
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+      scene.add(ambientLight);
+
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+      directionalLight.position.set(2, 2, 5);
+      scene.add(directionalLight);
+
+      const pointLight = new THREE.PointLight(0x22d3ee, 1, 10);
+      pointLight.position.set(-2, 1, 3);
+      scene.add(pointLight);
+
+      // Animation
+      let mouseX = 0;
+      let mouseY = 0;
+      let targetRotationX = 0;
+      let targetRotationY = 0;
+
+      canvas.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        mouseX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+        mouseY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+      });
+
+      canvas.addEventListener('mouseleave', () => {
+        mouseX = 0;
+        mouseY = 0;
+      });
+
+      // Update material color on theme change
+      const observer = new MutationObserver(() => {
+        const newColor = getAccentColor();
+        material.color.setHex(newColor);
+        material.emissive.setHex(newColor);
+      });
+
+      observer.observe(document.documentElement, { 
+        attributes: true, 
+        attributeFilter: ['data-theme'] 
+      });
+
+      // Animation loop
+      function animate() {
+        requestAnimationFrame(animate);
+
+        // Smooth follow mouse
+        targetRotationY += (mouseX * 0.5 - targetRotationY) * 0.1;
+        targetRotationX += (-mouseY * 0.3 - targetRotationX) * 0.1;
+
+        // Continuous subtle rotation
+        group.rotation.y = targetRotationY + Math.sin(Date.now() * 0.001) * 0.1;
+        group.rotation.x = targetRotationX + Math.cos(Date.now() * 0.001) * 0.05;
+
+        renderer.render(scene, camera);
+      }
+
+      animate();
+    })();
   </script>
 </body>
 </html>
