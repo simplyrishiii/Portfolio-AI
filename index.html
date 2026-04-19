@@ -16,9 +16,9 @@
       --glass:rgba(255,255,255,0.035);
       --glass-border:rgba(255,255,255,0.08);
       --glass-hover:rgba(255,255,255,0.065);
-      --t1:#00f5c8;   /* mint teal */
-      --t2:#7c6aff;   /* violet */
-      --t3:#ff6b6b;   /* coral */
+      --t1:#00f5c8;
+      --t2:#7c6aff;
+      --t3:#ff6b6b;
       --text:#f0eeff;
       --muted:rgba(240,238,255,0.38);
       --display:'Unbounded',sans-serif;
@@ -31,31 +31,11 @@
       color:var(--text);
       font-family:var(--body);
       overflow-x:hidden;
-      cursor:none;
     }
     ::selection{background:var(--t1);color:#000}
     ::-webkit-scrollbar{width:2px}
     ::-webkit-scrollbar-thumb{background:var(--t1)}
     a{color:inherit;text-decoration:none}
-
-    /* ─── CUSTOM CURSOR ─── */
-    #cursor{
-      position:fixed;width:12px;height:12px;
-      background:var(--t1);border-radius:50%;
-      pointer-events:none;z-index:9999;
-      transform:translate(-50%,-50%);
-      transition:width .2s,height .2s,background .2s;
-      mix-blend-mode:screen;
-    }
-    #cursor-ring{
-      position:fixed;width:36px;height:36px;
-      border:1px solid rgba(0,245,200,0.35);
-      border-radius:50%;pointer-events:none;z-index:9998;
-      transform:translate(-50%,-50%);
-      transition:all .12s ease;
-    }
-    body:has(a:hover) #cursor{width:20px;height:20px;background:#fff}
-    body:has(a:hover) #cursor-ring{width:52px;height:52px;border-color:rgba(255,255,255,0.2)}
 
     /* ─── AURORA BACKGROUND ─── */
     #aurora{
@@ -309,8 +289,6 @@
 
     /* ─── BENTO PROJECTS ─── */
     .bento{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:160px;gap:1rem}
-
-    /* Card sizes */
     .b-wide{grid-column:span 4;grid-row:span 2}
     .b-tall{grid-column:span 2;grid-row:span 2}
     .b-half{grid-column:span 3;grid-row:span 2}
@@ -356,11 +334,9 @@
     .btag.vi{border-color:var(--t2);color:var(--t2)}
     .btag.co{border-color:var(--t3);color:var(--t3)}
 
-    /* Featured card accent */
     .bcard.featured-card{background:linear-gradient(135deg,rgba(0,245,200,.08),rgba(124,106,255,.08))}
     .bcard.featured-card .bcard-title{font-size:clamp(1.4rem,2.5vw,2rem)}
 
-    /* Pipeline inside featured */
     .mini-pipeline{margin-top:1rem;display:flex;flex-direction:column;gap:0}
     .mpstep{
       font-family:var(--mono);font-size:.62rem;color:var(--muted);
@@ -370,18 +346,6 @@
     .mpstep .mn{color:var(--t1);font-weight:500}
     .mpstep:first-child{border-radius:8px 8px 0 0}
     .mpstep:last-child{border-radius:0 0 8px 8px}
-
-    /* Cert bento card */
-    .bcard.cert-mini{
-      background:linear-gradient(135deg,rgba(31,112,193,.12),rgba(124,106,255,.08));
-      border-color:rgba(31,112,193,.25);
-    }
-    .cert-mini-ibm{
-      font-family:var(--display);font-size:2.5rem;font-weight:900;
-      background:linear-gradient(135deg,#1F70C1,#4a9de8);
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-      background-clip:text;line-height:1;
-    }
 
     /* ─── ABOUT BENTO ─── */
     .about-grid{display:grid;grid-template-columns:3fr 2fr;gap:1rem}
@@ -413,7 +377,6 @@
     .live-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;animation:livePulse 2s ease-in-out infinite}
     @keyframes livePulse{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.4)}50%{box-shadow:0 0 0 6px rgba(74,222,128,0)}}
 
-    /* Stats row */
     .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2rem}
     .stat-block{
       padding:1.5rem;border-radius:16px;text-align:center;
@@ -472,4 +435,328 @@
     /* ─── MOBILE ─── */
     @media(max-width:900px){
       .nav-links{display:none}
-      .bento{grid-template-columns:
+      .bento{grid-template-columns:1fr 1fr}
+      .b-wide,.b-tall,.b-half,.b-thin{grid-column:span 2}
+      .cert-inner{grid-template-columns:1fr;gap:1.5rem}
+      .cert-meta{text-align:left;flex-direction:row;flex-wrap:wrap;gap:1.5rem}
+      .about-grid{grid-template-columns:1fr}
+      .skills-row{grid-template-columns:repeat(2,1fr)}
+      .stats-row{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:600px){
+      .bento{grid-template-columns:1fr}
+      .b-wide,.b-tall,.b-half,.b-thin{grid-column:span 1}
+      .skills-row{grid-template-columns:1fr}
+      .stats-row{grid-template-columns:1fr}
+      nav{padding:1rem 1.5rem}
+      #hero{padding:6rem 1.5rem 4rem}
+      .contact-card{padding:3rem 1.5rem}
+      .cert-inner{padding:1.5rem}
+      .cert-courses-section{padding:1rem 1.5rem 1.5rem}
+    }
+  </style>
+</head>
+<body>
+  <!-- Aurora background -->
+  <div id="aurora">
+    <div class="aurora-blob a1"></div>
+    <div class="aurora-blob a2"></div>
+    <div class="aurora-blob a3"></div>
+  </div>
+  <div id="grain"></div>
+
+  <!-- Nav -->
+  <nav id="nav">
+    <a class="nav-logo" href="#">RISHI SEN</a>
+    <ul class="nav-links">
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a class="nav-pill" href="#contact">Let&apos;s Talk</a>
+  </nav>
+
+  <!-- Hero -->
+  <section id="hero">
+    <span class="hero-tag">IBM Certified AI Engineer</span>
+    <h1 class="hero-h1">
+      Building <span class="line2">Intelligent</span> Systems
+    </h1>
+    <p class="hero-sub">
+      Crafting production-grade AI solutions with LLMs, RAG pipelines, and agentic architectures. Transforming complex problems into elegant, scalable systems.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">View Projects</a>
+      <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+    </div>
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- Marquee -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span>LLMs</span><span class="dot">•</span>
+      <span>RAG</span><span class="dot">•</span>
+      <span>Deep Learning</span><span class="dot">•</span>
+      <span>Agentic Systems</span><span class="dot">•</span>
+      <span>Computer Vision</span><span class="dot">•</span>
+      <span>NLP</span><span class="dot">•</span>
+      <span>Prompt Engineering</span><span class="dot">•</span>
+      <span>LLMs</span><span class="dot">•</span>
+      <span>RAG</span><span class="dot">•</span>
+      <span>Deep Learning</span><span class="dot">•</span>
+      <span>Agentic Systems</span><span class="dot">•</span>
+      <span>Computer Vision</span><span class="dot">•</span>
+      <span>NLP</span><span class="dot">•</span>
+      <span>Prompt Engineering</span><span class="dot">•</span>
+    </div>
+  </div>
+
+  <!-- Projects Section -->
+  <section id="projects" class="section">
+    <div class="wrap">
+      <p class="section-label reveal">Selected Work</p>
+      <h2 class="section-title reveal reveal-d1">Featured Projects</h2>
+
+      <div class="bento">
+        <!-- Featured Project -->
+        <a href="#" class="bcard b-wide featured-card reveal reveal-d1">
+          <span class="bcard-num">01</span>
+          <span class="bcard-arrow barrow">↗</span>
+          <h3 class="bcard-title">RAG Knowledge Assistant</h3>
+          <p class="bcard-desc">End-to-end retrieval-augmented generation system with semantic search, multi-document synthesis, and conversational memory.</p>
+          <div class="mini-pipeline">
+            <div class="mpstep"><span class="mn">1</span> Document Ingestion</div>
+            <div class="mpstep"><span class="mn">2</span> Vector Embedding</div>
+            <div class="mpstep"><span class="mn">3</span> Semantic Retrieval</div>
+            <div class="mpstep"><span class="mn">4</span> LLM Response</div>
+          </div>
+          <div class="bcard-tags">
+            <span class="btag hi">LangChain</span>
+            <span class="btag vi">Pinecone</span>
+            <span class="btag">GPT-4</span>
+          </div>
+        </a>
+
+        <!-- Project 2 -->
+        <a href="#" class="bcard b-tall reveal reveal-d2">
+          <span class="bcard-num">02</span>
+          <span class="bcard-arrow barrow">↗</span>
+          <h3 class="bcard-title">Autonomous Agent Framework</h3>
+          <p class="bcard-desc">Multi-agent system with tool use, planning, and self-reflection capabilities.</p>
+          <div class="bcard-tags">
+            <span class="btag hi">AutoGen</span>
+            <span class="btag">Python</span>
+          </div>
+        </a>
+
+        <!-- Project 3 -->
+        <a href="#" class="bcard b-half reveal reveal-d1">
+          <span class="bcard-num">03</span>
+          <span class="bcard-arrow barrow">↗</span>
+          <h3 class="bcard-title">Vision Transformer Pipeline</h3>
+          <p class="bcard-desc">Custom ViT implementation for medical image analysis with attention visualization.</p>
+          <div class="bcard-tags">
+            <span class="btag vi">PyTorch</span>
+            <span class="btag">ViT</span>
+          </div>
+        </a>
+
+        <!-- Project 4 -->
+        <a href="#" class="bcard b-half reveal reveal-d2">
+          <span class="bcard-num">04</span>
+          <span class="bcard-arrow barrow">↗</span>
+          <h3 class="bcard-title">Real-time Sentiment Engine</h3>
+          <p class="bcard-desc">Production NLP pipeline processing 10K+ messages/second with 98% accuracy.</p>
+          <div class="bcard-tags">
+            <span class="btag co">Kafka</span>
+            <span class="btag">BERT</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Certification Section -->
+  <section class="section">
+    <div class="wrap">
+      <p class="section-label reveal">Credentials</p>
+      <h2 class="section-title reveal reveal-d1">Certification</h2>
+
+      <div class="cert-card reveal reveal-d2">
+        <div class="cert-glow-bar"></div>
+        <div class="cert-inner">
+          <div class="cert-content">
+            <div class="cert-badge-row">
+              <span class="ibm-badge">IBM</span>
+              <div class="cert-divider"></div>
+              <span class="coursera-tag">Coursera</span>
+            </div>
+            <p class="cert-name">Professional Certificate</p>
+            <h3 class="cert-title">IBM AI Engineering</h3>
+            <p class="cert-desc">
+              Comprehensive program covering deep learning, neural networks, TensorFlow, Keras, PyTorch, and computer vision. Hands-on projects with real-world AI applications.
+            </p>
+            <a href="https://www.coursera.org/account/accomplishments/professional-cert/EXAMPLE" target="_blank" class="verify-btn">
+              Verify Certificate ↗
+            </a>
+          </div>
+          <div class="cert-meta">
+            <div class="meta-item">
+              Completed
+              <b>2024</b>
+            </div>
+            <div class="meta-item">
+              Courses
+              <b>6 Courses</b>
+            </div>
+            <div class="meta-item">
+              Projects
+              <b>12+ Projects</b>
+            </div>
+          </div>
+        </div>
+        <div class="cert-courses-section">
+          <p class="courses-heading">Courses Completed</p>
+          <div class="courses-wrap">
+            <span class="cpill">Machine Learning with Python</span>
+            <span class="cpill">Deep Learning & Neural Networks</span>
+            <span class="cpill">Computer Vision & Image Processing</span>
+            <span class="cpill">TensorFlow & Keras</span>
+            <span class="cpill">PyTorch Fundamentals</span>
+            <span class="cpill">AI Capstone Project</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skills-row reveal reveal-d3">
+        <div class="skill-block">
+          <h4>Languages</h4>
+          <div class="sk">Python</div>
+          <div class="sk">JavaScript</div>
+          <div class="sk">TypeScript</div>
+          <div class="sk">SQL</div>
+        </div>
+        <div class="skill-block">
+          <h4>AI/ML</h4>
+          <div class="sk">PyTorch</div>
+          <div class="sk">TensorFlow</div>
+          <div class="sk">LangChain</div>
+          <div class="sk">Hugging Face</div>
+        </div>
+        <div class="skill-block">
+          <h4>Infrastructure</h4>
+          <div class="sk">Docker</div>
+          <div class="sk">AWS</div>
+          <div class="sk">Vector DBs</div>
+          <div class="sk">Redis</div>
+        </div>
+        <div class="skill-block">
+          <h4>Specialties</h4>
+          <div class="sk">RAG Systems</div>
+          <div class="sk">Agents</div>
+          <div class="sk">Fine-tuning</div>
+          <div class="sk">MLOps</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="section">
+    <div class="wrap">
+      <p class="section-label reveal">About</p>
+      <h2 class="section-title reveal reveal-d1">Who I Am</h2>
+
+      <div class="about-grid">
+        <div class="about-main reveal reveal-d2">
+          <h3 class="about-name">Rishi <span class="grad">Sen</span></h3>
+          <div class="about-body">
+            <p>AI Engineer passionate about building intelligent systems that solve real-world problems. Specialized in Large Language Models, retrieval-augmented generation, and autonomous agent architectures.</p>
+            <p>I bridge the gap between cutting-edge AI research and production-ready applications, focusing on scalability, reliability, and user experience.</p>
+          </div>
+        </div>
+        <div class="about-right">
+          <div class="info-card reveal reveal-d2">
+            <p class="info-label">Status</p>
+            <div class="status-live">
+              <div class="live-dot"></div>
+              Open to Opportunities
+            </div>
+          </div>
+          <div class="info-card reveal reveal-d3">
+            <p class="info-label">Email</p>
+            <p class="info-val"><a href="mailto:rishi@example.com">rishi@example.com</a></p>
+          </div>
+          <div class="info-card reveal reveal-d3">
+            <p class="info-label">Location</p>
+            <p class="info-val">Available Worldwide</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-block reveal">
+          <div class="stat-n">15+</div>
+          <div class="stat-l">Projects</div>
+        </div>
+        <div class="stat-block reveal reveal-d1">
+          <div class="stat-n">3+</div>
+          <div class="stat-l">Years Exp</div>
+        </div>
+        <div class="stat-block reveal reveal-d2">
+          <div class="stat-n">10M+</div>
+          <div class="stat-l">Data Points</div>
+        </div>
+        <div class="stat-block reveal reveal-d3">
+          <div class="stat-n">99%</div>
+          <div class="stat-l">Uptime</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section">
+    <div class="wrap">
+      <div class="contact-card reveal">
+        <h2 class="contact-big">Let&apos;s <span class="grad">Build</span></h2>
+        <p class="contact-sub">Have a project in mind? Let&apos;s create something extraordinary together.</p>
+        <div class="contact-btns">
+          <a href="mailto:rishi@example.com" class="btn btn-primary">Send Email</a>
+          <a href="https://linkedin.com/in/rishisen" target="_blank" class="btn btn-ghost">LinkedIn</a>
+          <a href="https://github.com/simplyrishiii" target="_blank" class="btn btn-ghost">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <span>© 2024 <b>Rishi Sen</b></span>
+    <span>Built with passion</span>
+  </footer>
+
+  <script>
+    // Nav scroll effect
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('stuck', window.scrollY > 50);
+    });
+
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
